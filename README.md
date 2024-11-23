@@ -9,6 +9,14 @@ A digital avatar implementation, based off MediaPipe
 - Uses pyvirtualcam to send the avatar directly to a virtual OBS camera display, allowing use in applications such as zoom, discord, etc.
   (see https://pypi.org/project/pyvirtualcam/ for installation instructions)
 
+## Running instructions
+- Clone the repository, and run /build/main/main.exe
+- Customize and enjoy with the tk GUI
+
+## Creating coloring presets
+- Open up indices.py, and create a new key in "PALETTES" attributed to a dictionary
+  containing volor values in bgr format for each facial feature.
+
 ## Currently implemented features:
 ### Gui
 - Customizeable and programmable facial coloring presets
