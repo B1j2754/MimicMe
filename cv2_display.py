@@ -5,6 +5,7 @@ import pygame as pg
 import numpy as np
 import tkinter as tk
 import pyvirtualcam
+import math
 
 # Pull in values from config
 import config
@@ -14,6 +15,16 @@ radius = 1
 
 # Define the feature updates function
 def update_features_from_queue(q):
+    """
+    Retrieves the latest feature data from a queue.
+
+    Parameters:
+    - q (queue.Queue): A queue object from the queue module. The queue should contain feature data
+
+    Returns:
+    - updated_features (list | bool): Returns the latest feature data if available in the queue
+      If queue is empty or error occurs during retrieval, it returns False
+    """
     try:
         if not q.empty():
             updated_features = q.get_nowait()  # Get the latest feature data from the queue
@@ -21,7 +32,17 @@ def update_features_from_queue(q):
     except:
         return False
 
-def window_cv2(q):
+
+def window_cv2(q):  
+        """
+        Captures webcam feed, processes facial and hand landmarks, and displays in a Pygame window
+
+        Parameters:
+        - q (queue.Queue): A queue used for updating feature settings dynamically
+
+        Returns:
+        - message (str): Completion message ("CV2 - Done!")
+        """
         global features
 
         # Initialize Pygame for displaying avatar
@@ -145,6 +166,12 @@ def window_cv2(q):
                                     elif "LIP" in feature_name: # Check if points need to be processed as lips
                                         cv2.fillPoly(blank_screen if fill_frame else frame, [np.array(adjusted_points, dtype=np.int32)], color)
                                         cv2.polylines(blank_screen if fill_frame else frame, [np.array(adjusted_points, dtype=np.int32)], True, color, 2)
+
+                                    elif "EAR" in feature_name: # Check if points need to be processed as ears
+                                        center = ((adjusted_points[0][0] + adjusted_points[1][0])/2 , (adjusted_points[0][1] + adjusted_points[1][1])/2)
+                                        center = (int(center[0]), int(center[1]))
+
+                                        cv2.ellipse(blank_screen if fill_frame else frame, center=center, axes=(25, 10), angle=math.degrees(math.atan2(adjusted_points[0][1] - adjusted_points[1][1], adjusted_points[0][0] - adjusted_points[1][0])), startAngle=0, endAngle=360, color=color, thickness=0)
 
                                     elif feature_name == "BACKGROUND" or feature_name.startswith("HAND"): # Check if points are hand points or background
                                         continue
