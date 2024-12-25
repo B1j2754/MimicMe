@@ -8,6 +8,10 @@ A digital avatar implementation, based off MediaPipe
   and Pygame for rendering (using openGL allowing faster rendering speeds while window does not have rendering priority)
 - Uses pyvirtualcam to send the avatar directly to a virtual OBS camera display, allowing use in applications such as zoom, discord, etc.
   (see https://pypi.org/project/pyvirtualcam/ for installation instructions)
+  - Download OBS
+  - Start up OBS
+  - Click "Start Virtual Camera" (bottom right), then "Stop Virtual Camera"
+  - Close OBS
 
 ## Running instructions
 - Clone the repository, and run /build/main/main.exe
